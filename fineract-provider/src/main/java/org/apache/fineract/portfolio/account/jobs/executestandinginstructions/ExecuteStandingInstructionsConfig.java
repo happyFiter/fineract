@@ -22,6 +22,9 @@ import org.apache.fineract.infrastructure.core.service.database.DatabaseSpecific
 import org.apache.fineract.infrastructure.jobs.service.JobName;
 import org.apache.fineract.portfolio.account.service.AccountTransfersWritePlatformService;
 import org.apache.fineract.portfolio.account.service.StandingInstructionReadPlatformService;
+import org.apache.fineract.portfolio.savings.domain.SavingsAccountAssembler;
+import org.apache.fineract.infrastructure.core.config.FineractProperties;
+import org.apache.fineract.portfolio.account.jobs.executestandinginstructions.CustomExecuteStandingInstructionsTasklet;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -49,6 +52,10 @@ public class ExecuteStandingInstructionsConfig {
     private DatabaseSpecificSQLGenerator sqlGenerator;
     @Autowired
     private AccountTransfersWritePlatformService accountTransfersWritePlatformService;
+    @Autowired
+    private SavingsAccountAssembler savingsAccountAssembler;
+    @Autowired
+    private FineractProperties fineractProperties;
 
     @Bean
     protected Step executeStandingInstructionsStep() {
@@ -64,7 +71,7 @@ public class ExecuteStandingInstructionsConfig {
 
     @Bean
     public ExecuteStandingInstructionsTasklet executeStandingInstructionsTasklet() {
-        return new ExecuteStandingInstructionsTasklet(standingInstructionReadPlatformService, jdbcTemplate, sqlGenerator,
-                accountTransfersWritePlatformService);
+        return new CustomExecuteStandingInstructionsTasklet(standingInstructionReadPlatformService, jdbcTemplate, sqlGenerator,
+                accountTransfersWritePlatformService, savingsAccountAssembler, fineractProperties);
     }
 }
