@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,8 @@ public class FineractProperties {
     private FineractLoanProperties loan;
 
     private FineractSamplingProperties sampling;
+
+    private FineractStandingInstructionProperties standingInstruction;
 
     private FineractModulesProperties module;
 
@@ -543,6 +546,13 @@ public class FineractProperties {
         private int samplingRate;
         private String sampledClasses;
         private int resetPeriodSec;
+    }
+
+    @Getter
+    @Setter
+    public static class FineractStandingInstructionProperties {
+
+        private BigDecimal residualBalanceThreshold = BigDecimal.ZERO;
     }
 
     @Getter
